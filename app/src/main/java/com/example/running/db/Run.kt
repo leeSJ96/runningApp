@@ -1,4 +1,4 @@
-package com.example.running
+package com.example.running.db
 
 import android.graphics.Bitmap
 import androidx.room.Entity

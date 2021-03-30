@@ -2,7 +2,6 @@ package com.example.running.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.running.Run
 
 @Dao
 interface RunDAO {
