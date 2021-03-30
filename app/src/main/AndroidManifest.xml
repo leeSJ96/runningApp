@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Running">
-        <activity android:name=".MainActivity" android:launchMode="singleTask">
+        <activity android:name=".ui.MainActivity" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +29,7 @@
             />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_Key"
+            android:value="@string/google_maps_key"
             />
 
 
