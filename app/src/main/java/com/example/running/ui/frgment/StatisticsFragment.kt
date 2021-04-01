@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.running.R
+import com.example.running.di.other.CustomMarkerView
 import com.example.running.di.other.TrackingUtility
 import com.example.running.ui.MainViewModel
 import com.example.running.ui.StatisticsViewModel
@@ -27,6 +28,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeToObservers()
+        setupBarChart()
     }
 
     private fun setupBarChart() {
@@ -95,6 +97,7 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics){
                 }
 
                 barChart.data = BarData(bardataSet)
+                barChart.marker = CustomMarkerView(it.reversed(), requireContext(),R.layout.marker_view)
                 barChart.invalidate()
             }
         })
