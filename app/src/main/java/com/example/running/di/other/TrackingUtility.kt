@@ -3,6 +3,7 @@ package com.example.running.di.other
 import android.content.Context
 import android.location.Location
 import android.os.Build
+import com.example.running.service.Polyline
 import pub.devrel.easypermissions.EasyPermissions
 import java.util.concurrent.TimeUnit
 import java.util.jar.Manifest
@@ -11,7 +12,7 @@ import kotlin.math.min
 object TrackingUtility {
 
     fun hasLocationPermissions(context: Context) =
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             EasyPermissions.hasPermissions(
                 context,
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -26,11 +27,11 @@ object TrackingUtility {
             )
         }
 
-    fun calculatePolylineLength(polyline: com.example.running.service.Polyline): Float{
+    fun calculatePolylineLength(polyline: Polyline): Float {
         var distance = 0f
-        for(i in 0..polyline.size - 2){
+        for(i in 0..polyline.size - 2) {
             val pos1 = polyline[i]
-            val pos2 = polyline[i+ 1]
+            val pos2 = polyline[i + 1]
 
             val result = FloatArray(1)
             Location.distanceBetween(
@@ -65,3 +66,8 @@ object TrackingUtility {
                 "${if(milliseconds < 10) "0" else ""}$milliseconds"
     }
 }
+
+
+
+
+

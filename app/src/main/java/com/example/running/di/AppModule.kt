@@ -1,9 +1,15 @@
 package com.example.running.di
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.running.db.RunningDatabase
-import com.example.running.di.other.Constants.RUNNING_DATA_NAME
+import com.example.running.di.other.Constants.KEY_FIRST_TIME_TOGGLE
+import com.example.running.di.other.Constants.KEY_NAME
+import com.example.running.di.other.Constants.KEY_WEIGHT
+import com.example.running.di.other.Constants.RUNNING_DATABASE_NAME
+import com.example.running.di.other.Constants.SHARED_PREFERENCES_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,12 +28,31 @@ object AppModule {
     ) = Room.databaseBuilder(
         app,
         RunningDatabase::class.java,
-        RUNNING_DATA_NAME
+        RUNNING_DATABASE_NAME
     ).build()
 
     @Singleton
     @Provides
     fun provideRunDao(db: RunningDatabase) = db.getRunDao()
+
+    @Singleton
+    @Provides
+    fun provideSharedPreferences(@ApplicationContext app: Context) =
+        app.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
+
+    @Singleton
+    @Provides
+    fun provideName(sharedPref: SharedPreferences) = sharedPref.getString(KEY_NAME,"") ?:""
+
+    @Singleton
+    @Provides
+    fun provideWeight(sharedPref: SharedPreferences) = sharedPref.getFloat(KEY_WEIGHT,80f)
+
+    @Singleton
+    @Provides
+    fun provideFirstTimeToggle(sharedPref: SharedPreferences) = sharedPref.getBoolean(
+        KEY_FIRST_TIME_TOGGLE, true)
+
 
 
 }

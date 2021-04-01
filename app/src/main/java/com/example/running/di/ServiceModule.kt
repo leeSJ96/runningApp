@@ -23,7 +23,7 @@ object ServiceModule {
     @Provides
     fun provideFusedLocationProviderClient(
         @ApplicationContext app: Context
-    )= FusedLocationProviderClient(app)
+    ) = FusedLocationProviderClient(app)
 
     @ServiceScoped
     @Provides
@@ -42,14 +42,12 @@ object ServiceModule {
     @Provides
     fun provideBaseNotificationBuilder(
         @ApplicationContext app: Context,
-        pendingIntet: PendingIntent
-
+        pendingIntent: PendingIntent
     ) = NotificationCompat.Builder(app, Constants.NOTIFICATION_CHANNEL_ID)
         .setAutoCancel(false)
         .setOngoing(true)
         .setSmallIcon(R.drawable.ic_directions_run_black_24dp)
         .setContentTitle("Running App")
         .setContentText("00:00:00")
-        .setContentIntent(pendingIntet)
-
+        .setContentIntent(pendingIntent)
 }
