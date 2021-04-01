@@ -34,6 +34,8 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.math.round
 
+const val CANCEL_TRACKING_DIALOG_TAG = "CancelDialog"
+
 @AndroidEntryPoint
 class TrackingFragment : Fragment(R.layout.fragment_tracking) {
 
@@ -66,6 +68,16 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         mapView.onCreate(savedInstanceState)
         btnToggleRun.setOnClickListener {
             toggleRun()
+        }
+
+        if (savedInstanceState != null){
+            val cancelTrackDialog = parentFragmentManager.findFragmentByTag(
+                CANCEL_TRACKING_DIALOG_TAG
+            ) as CanceltrackingDialog?
+            cancelTrackDialog?.setYesListener {
+                stopRun()
+
+            }
         }
 
         btnFinishRun.setOnClickListener {
@@ -132,33 +144,28 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
     }
 
     private fun showCancelTrackingDialog(){
-        val dialog = MaterialAlertDialogBuilder(requireContext(),R.style.AlertDialogTheme)
-            .setTitle("삭제")
-            .setMessage("삭제를 누르면 데이터가 사라집니다")
-            .setIcon(R.drawable.ic_delete)
-            .setPositiveButton("Yes" ){_,_ ->
-                stopRun()
-            }
-            .setNegativeButton("취소"){ dialogInterface, _ ->
-                dialogInterface.cancel()
-            }
-            .create()
-        dialog.show()
+    CanceltrackingDialog().apply {
+        setYesListener {
+            stopRun()
+        }
+
+    }.show(parentFragmentManager, CANCEL_TRACKING_DIALOG_TAG)
     }
 
 
 
     private fun stopRun(){
+        tvTimer.text = "00:00:00:00"
         sendCommandToService(ACTION_STOP_SERVICE)
         findNavController().navigate(R.id.action_trackingFragment_to_runFragment)
     }
 
     private fun updateTracking(isTracking: Boolean) {
         this.isTracking = isTracking
-        if(!isTracking) {
+        if(!isTracking && curTimeInMillis > 0L) {
             btnToggleRun.text = "Start"
             btnFinishRun.visibility = View.VISIBLE
-        } else {
+        } else if(isTracking) {
             btnToggleRun.text = "Stop"
             menu?.getItem(0)?.isVisible =true
             btnFinishRun.visibility = View.GONE
